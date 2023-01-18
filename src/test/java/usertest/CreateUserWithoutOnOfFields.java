@@ -1,8 +1,9 @@
-package userTest;
+package usertest;
 import api.User;
 import api.UserClient;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +13,11 @@ import java.util.Arrays;
 
 @RunWith(value = Parameterized.class)
 
-public class CreateUserWithoutOnOfFields {
+public class CreateUserWithoutOnOfFields  {
     private UserClient userClient;
     private User body;
     private ValidatableResponse response;
+    private String accessToken;
 
     @Before
     public void createNewUser() {
@@ -44,6 +46,9 @@ public class CreateUserWithoutOnOfFields {
         response.assertThat().log().all().statusCode(403);
         response.assertThat().log().all().extract().path("message").equals("Email, password and name are required fields");
     }
-
+      @After
+    public void tearDown() {
+        userClient.delete(accessToken);
+    }
 }
 
