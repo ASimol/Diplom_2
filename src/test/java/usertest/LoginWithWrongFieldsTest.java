@@ -1,4 +1,4 @@
-package userTest;
+package usertest;
 
 import api.User;
 import api.UserClient;
@@ -18,7 +18,7 @@ public class LoginWithWrongFieldsTest {
     private ValidatableResponse response;
 
     @Before
-    public void createNewUser() {
+    public void setUp() {
         userClient = new UserClient();
     }
 
