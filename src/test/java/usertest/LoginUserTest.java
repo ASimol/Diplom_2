@@ -1,4 +1,4 @@
-package userTest;
+package usertest;
 
 import api.User;
 import api.UserClient;
