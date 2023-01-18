@@ -6,9 +6,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.Locale;
 
 public class User {
-    public String email;
-    public String password;
-    public String name;
+    private String email;
+    private String password;
+    private String name;
 
     static Faker faker = new Faker(new Locale("en_EN"));
 
@@ -20,7 +20,6 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
     public static User getRandomUser() {
         return new User().setRandomName().setRandomEmail().setRandomPassword();
     }
@@ -39,6 +38,4 @@ public class User {
         this.password = RandomStringUtils.randomAlphabetic(5);
         return this;
     }
-
-
 }
