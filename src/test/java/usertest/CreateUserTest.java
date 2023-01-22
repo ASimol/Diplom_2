@@ -1,9 +1,10 @@
-package userTest;
+package usertest;
 
 import api.User;
 import api.UserClient;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,21 +15,22 @@ public class CreateUserTest {
 
     private UserClient userClient;
     private ValidatableResponse response;
+    private String token;
 
     @Before
-    public void createNewUser() {
+    public void setUp() {
         userClient = new UserClient();
     }
-
     @Test
     @DisplayName("Создание пользователя")
     public void createUserSuccessTest() {
         User user = User.getRandomUser();
         response = userClient.create(user);
-        response.assertThat().statusCode(200);
+        response.assertThat().log().all().statusCode(200);
         response.assertThat().extract().path("success").equals(true);
         response.assertThat().extract().path("accessToken").equals(is(not(null)));
         response.assertThat().extract().path("refreshToken").equals(is(not(null)));
+        token = response.extract().path("accessToken");
     }
 
     @Test
@@ -39,6 +41,12 @@ public class CreateUserTest {
         response = userClient.create(user);
         response.assertThat().extract().path("success").equals(false);
         response.assertThat().extract().path("message").equals("User already exists");
-        response.assertThat().statusCode(403);
+        response.assertThat().log().all().statusCode(403);
+        token = response.extract().path("accessToken");
+    }
+
+    @After
+    public void tearDown() {
+        userClient.delete(token);
     }
 }
