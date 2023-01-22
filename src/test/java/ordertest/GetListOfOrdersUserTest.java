@@ -1,4 +1,4 @@
-package orderTest;
+package ordertest;
 
 import api.Ingredients;
 import api.Order;
