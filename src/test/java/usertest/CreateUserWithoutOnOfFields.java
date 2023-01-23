@@ -44,9 +44,9 @@ public class CreateUserWithoutOnOfFields  {
     public void createUserWithoutMandatoryFieldsTest() {
         User user = body;
         response = userClient.create(user);
+        token = response.extract().path("accessToken");
         response.assertThat().log().all().statusCode(403);
         response.assertThat().log().all().extract().path("message").equals("Email, password and name are required fields");
-        token = response.extract().path("accessToken");
     }
       @After
     public void tearDown() {

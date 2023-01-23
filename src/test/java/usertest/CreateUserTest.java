@@ -26,11 +26,12 @@ public class CreateUserTest {
     public void createUserSuccessTest() {
         User user = User.getRandomUser();
         response = userClient.create(user);
+        token = response.extract().path("accessToken");
         response.assertThat().log().all().statusCode(200);
         response.assertThat().extract().path("success").equals(true);
         response.assertThat().extract().path("accessToken").equals(is(not(null)));
         response.assertThat().extract().path("refreshToken").equals(is(not(null)));
-        token = response.extract().path("accessToken");
+
     }
 
     @Test
@@ -38,11 +39,11 @@ public class CreateUserTest {
     public void createExistsUserTest() {
         User user = User.getRandomUser();
         response = userClient.create(user);
+        token = response.extract().path("accessToken");
         response = userClient.create(user);
         response.assertThat().extract().path("success").equals(false);
         response.assertThat().extract().path("message").equals("User already exists");
         response.assertThat().log().all().statusCode(403);
-        token = response.extract().path("accessToken");
     }
 
     @After
